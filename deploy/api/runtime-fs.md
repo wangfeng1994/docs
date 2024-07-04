@@ -49,23 +49,23 @@ This example lists the contents of a directory and returns this list as a JSON
 object in the response body.
 
 ```js
-async function handler(_req) {
-  // List the posts in the `blog` directory located at the root
-  // of the repository.
-  const posts = [];
-  for await (const post of Deno.readDir(`./blog`)) {
-    posts.push(post);
-  }
+export default {
+  async fetch(_req) {
+    // List the posts in the `blog` directory located at the root
+    // of the repository.
+    const posts = [];
+    for await (const post of Deno.readDir(`./blog`)) {
+      posts.push(post);
+    }
 
-  // Return JSON.
-  return new Response(JSON.stringify(posts, null, 2), {
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-}
-
-Deno.serve(handler);
+    // Return JSON.
+    return new Response(JSON.stringify(posts, null, 2), {
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+  },
+};
 ```
 
 ## Deno.readFile
@@ -90,26 +90,26 @@ This example reads the contents of a file into memory as a byte array, then
 returns it as the response body.
 
 ```js
-async function handler(_req) {
-  // Let's read the README.md file available at the root
-  // of the repository to explore the available methods.
+export default {
+  async fetch(_req) {
+    // Let's read the README.md file available at the root
+    // of the repository to explore the available methods.
 
-  // Relative paths are relative to the root of the repository
-  const readmeRelative = await Deno.readFile("./README.md");
-  // Absolute paths.
-  // The content of the repository is available under at Deno.cwd().
-  const readmeAbsolute = await Deno.readFile(`${Deno.cwd()}/README.md`);
-  // File URLs are also supported.
-  const readmeFileUrl = await Deno.readFile(
-    new URL(`file://${Deno.cwd()}/README.md`),
-  );
+    // Relative paths are relative to the root of the repository
+    const readmeRelative = await Deno.readFile("./README.md");
+    // Absolute paths.
+    // The content of the repository is available under Deno.cwd().
+    const readmeAbsolute = await Deno.readFile(`${Deno.cwd()}/README.md`);
+    // File URLs are also supported.
+    const readmeFileUrl = await Deno.readFile(
+      new URL(`file://${Deno.cwd()}/README.md`),
+    );
 
-  // Decode the Uint8Array as string.
-  const readme = new TextDecoder().decode(readmeRelative);
-  return new Response(readme);
-}
-
-Deno.serve(handler);
+    // Decode the Uint8Array as a string.
+    const readme = new TextDecoder().decode(readmeRelative);
+    return new Response(readme);
+  },
+};
 ```
 
 > Note: to use this feature, you must link a GitHub repository to your project.

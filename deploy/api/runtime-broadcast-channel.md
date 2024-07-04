@@ -60,14 +60,14 @@ running instances of the server.
 ```ts
 import { Hono } from "https://deno.land/x/hono/mod.ts";
 
-// in-memory cache of messages
+// In-memory cache of messages
 const messages = [];
 
 // A BroadcastChannel used by all isolates
 const channel = new BroadcastChannel("all_messages");
 
 // When a new message comes in from other instances, add it
-channel.onmessage = (event: MessageEvent) => {
+channel.onmessage = (event) => {
   messages.push(event.data);
 };
 
@@ -91,11 +91,13 @@ app.get("/", (c) => {
   return c.json(messages);
 });
 
-Deno.serve(app.fetch);
+// Serve the app using Deno's declarative fetch
+export default app;
 ```
 
 You can test this example yourself on Deno Deploy using
 [this playground](https://dash.deno.com/playground/broadcast-channel-example).
+Visit the `/send` endpoint with a `message` query parameter to add a message to the list. Eg. `/send?message=Hello%20world`.
 
 [eventtarget]: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
 [messageevent]: https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent

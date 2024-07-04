@@ -1,14 +1,16 @@
 ---
-title: "`deno serve`, declarative way to write servers"
+title: "deno serve"
 ---
 
 In addition to `deno run`, Deno offers a `deno serve` command-line option that
-automatically configures servers based on the exports of your main module.
+automatically configures servers based on the exports of your main module,
+abstracting away implementation details, making your code easier to reason about
+and maintain.
 
-Here's an example of how you can create a simple HTTP server using the `serve`
-subcommand:
+Here's an example of how you can create a simple HTTP server with declarative
+fetch:
 
-```typescript
+```typescript title="server.ts"
 export default {
   async fetch(request) {
     return new Response("Hello world!");
@@ -21,7 +23,7 @@ In this example, the `fetch` function is used to handle incoming HTTP requests.
 The logic inside the `fetch` function can be customized to handle different
 types of requests and serve content accordingly:
 
-```typescript
+```typescript title="server.ts"
 export default {
   async fetch(request) {
     if (request.url.startsWith("/json")) {
@@ -31,4 +33,10 @@ export default {
     return new Response("Hello world!");
   },
 };
+```
+
+You can then run the server using the `deno serve` command:
+
+```bash
+deno serve server.ts
 ```

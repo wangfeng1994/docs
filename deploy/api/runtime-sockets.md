@@ -23,33 +23,33 @@ function Deno.connect(options: ConnectOptions): Promise<Conn>
 ### Example
 
 ```js
-async function handler(_req) {
-  // Make a TCP connection to example.com
-  const connection = await Deno.connect({
-    port: 80,
-    hostname: "example.com",
-  });
+export default {
+  async fetch(_req) {
+    // Make a TCP connection to example.com
+    const connection = await Deno.connect({
+      port: 80,
+      hostname: "example.com",
+    });
 
-  // Send raw HTTP GET request.
-  const request = new TextEncoder().encode(
-    "GET / HTTP/1.1\nHost: example.com\r\n\r\n",
-  );
-  const _bytesWritten = await connection.write(request);
+    // Send raw HTTP GET request.
+    const request = new TextEncoder().encode(
+      "GET / HTTP/1.1\nHost: example.com\r\n\r\n",
+    );
+    const _bytesWritten = await connection.write(request);
 
-  // Read 15 bytes from the connection.
-  const buffer = new Uint8Array(15);
-  await connection.read(buffer);
-  connection.close();
+    // Read 15 bytes from the connection.
+    const buffer = new Uint8Array(15);
+    await connection.read(buffer);
+    connection.close();
 
-  // Return the bytes as plain text.
-  return new Response(buffer, {
-    headers: {
-      "content-type": "text/plain;charset=utf-8",
-    },
-  });
-}
-
-Deno.serve(handler);
+    // Return the bytes as plain text.
+    return new Response(buffer, {
+      headers: {
+        "content-type": "text/plain;charset=utf-8",
+      },
+    });
+  },
+};
 ```
 
 ## `Deno.connectTls`
@@ -69,29 +69,31 @@ function Deno.connectTls(options: ConnectTlsOptions): Promise<Conn>
 ```js
 async function handler(_req) {
   // Make a TLS connection to example.com
-  const connection = await Deno.connectTls({
-    port: 443,
-    hostname: "example.com",
-  });
+export default {
+  async fetch(_req) {
+    // Make a TLS connection to example.com
+    const connection = await Deno.connectTls({
+      port: 443,
+      hostname: "example.com",
+    });
 
-  // Send raw HTTP GET request.
-  const request = new TextEncoder().encode(
-    "GET / HTTP/1.1\nHost: example.com\r\n\r\n",
-  );
-  const _bytesWritten = await connection.write(request);
+    // Send raw HTTP GET request.
+    const request = new TextEncoder().encode(
+      "GET / HTTP/1.1\nHost: example.com\r\n\r\n",
+    );
+    const _bytesWritten = await connection.write(request);
 
-  // Read 15 bytes from the connection.
-  const buffer = new Uint8Array(15);
-  await connection.read(buffer);
-  connection.close();
+    // Read 15 bytes from the connection.
+    const buffer = new Uint8Array(15);
+    await connection.read(buffer);
+    connection.close();
 
-  // Return the bytes as plain text.
-  return new Response(buffer, {
-    headers: {
-      "content-type": "text/plain;charset=utf-8",
-    },
-  });
-}
-
-Deno.serve(handler);
+    // Return the bytes as plain text.
+    return new Response(buffer, {
+      headers: {
+        "content-type": "text/plain;charset=utf-8",
+      },
+    });
+  },
+};
 ```

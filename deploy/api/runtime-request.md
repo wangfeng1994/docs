@@ -78,25 +78,26 @@ All the above properties are read only.
 ## Example
 
 ```ts
-function handler(_req) {
-  // Create a post request
-  const request = new Request("https://post.deno.dev", {
-    method: "POST",
-    body: JSON.stringify({
-      message: "Hello world!",
-    }),
-    headers: {
-      "content-type": "application/json",
+export default {
+    async fetch(_req) {
+        // Create a post request
+        const request = new Request("https://post.deno.dev", {
+            method: "POST",
+            body: JSON.stringify({
+                message: "Hello world!",
+            }),
+            headers: {
+                "content-type": "application/json",
+            },
+        });
+
+        console.log(request.method); // POST
+        console.log(request.headers.get("content-type")); // application/json
+
+        // Return the fetch response
+        return await fetch(request);
     },
-  });
-
-  console.log(request.method); // POST
-  console.log(request.headers.get("content-type")); // application/json
-
-  return fetch(request);
-}
-
-Deno.serve(handler);
+};
 ```
 
 [cache]: https://developer.mozilla.org/en-US/docs/Web/API/Request/cache

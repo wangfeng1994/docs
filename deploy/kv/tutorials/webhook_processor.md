@@ -46,39 +46,39 @@ webhook requests.
 Read along with the comments below to see what's happening at each step.
 
 ```ts title="server.ts"
-// Get a handle for a Deno KV database instance. KV is built in to the Deno
-// runtime, and is available with zero config both locally and on Deno Deploy
+// Get a handle for a Deno KV database instance. KV is built into the Deno
+// runtime and is available with zero config both locally and on Deno Deploy.
 const kv = await Deno.openKv();
 
-// Set up a listener that will handle work that is offloaded from our server.
-// In this case, it's just going to add incoming webhook payloads to a KV
-// database, with a timestamp.
+// Set up a listener that will handle work offloaded from our server.
+// In this case, it will add incoming webhook payloads to a KV
+// database with a timestamp.
 kv.listenQueue(async (message) => {
   await kv.set(["github", Date.now()], message);
 });
 
-// This is a simple HTTP server that will handle incoming POST requests from
-// GitHub webhooks.
-Deno.serve(async (req: Request) => {
-  if (req.method === "POST") {
-    // GitHub sends webhook requests as POST requests to your server. You can
-    // configure GitHub to send JSON in the POST body, which you can then parse
-    // from the request object.
-    const payload = await req.json();
-    await kv.enqueue(payload);
-    return new Response("", { status: 200 });
-  } else {
-    // If the server is handling a GET request, this will just list out all the
-    // webhook events that have been recorded in our KV database.
-    const iter = kv.list<string>({ prefix: ["github"] });
-    const github = [];
-    for await (const res of iter) {
-      github.push({
-        timestamp: res.key[1],
-        payload: res.value,
-      });
+// Define the response handler
+export default {
+  async fetch(req) {
+    if (req.method === "POST") {
+      // GitHub sends webhook requests as POST requests to your server.
+      // You can configure GitHub to send JSON in the POST body, which you can then parse.
+      const payload = await req.json();
+      await kv.enqueue(payload);
+      return new Response("", { status: 200 });
+    } else {
+      // If the server is handling a GET request, this will just list out all the
+      // webhook events that have been recorded in our KV database.
+      const iter = kv.list<string>({ prefix: ["github"] });
+      const github = [];
+      for await (const res of iter) {
+        github.push({
+          timestamp: res.key[1],
+          payload: res.value,
+        });
+      }
+      return new Response(JSON.stringify(github, null, 2));
     }
-    return new Response(JSON.stringify(github, null, 2));
-  }
-});
+  },
+};
 ```

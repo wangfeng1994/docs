@@ -69,22 +69,23 @@ The return type is a `Response` instance.
 ## Example
 
 ```ts
-function handler(_req) {
-  // Create a response with html as its body.
-  const response = new Response("<html> Hello </html>", {
-    status: 200,
-    headers: {
-      "content-type": "text/html",
-    },
-  });
+export default {
+  async fetch(_req) {
+    // Create a response with HTML as its body.
+    const response = new Response("<html> Hello </html>", {
+      status: 200,
+      headers: {
+        "content-type": "text/html",
+      },
+    });
 
-  console.log(response.status); // 200
-  console.log(response.headers.get("content-type")); // text/html
+    console.log(response.status); // 200
+    console.log(response.headers.get("content-type")); // text/html
 
-  return response;
-}
-
-Deno.serve(handler);
+    // Return the response
+    return response;
+  },
+};
 ```
 
 [clone]: https://developer.mozilla.org/en-US/docs/Web/API/Response/clone
