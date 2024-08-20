@@ -8,7 +8,6 @@ export const sidebar = [
         label: "Hello World",
         id: "/runtime/",
       },
-      "/runtime/getting_started/first_project/",
       "/runtime/getting_started/setup_your_environment/",
       "/runtime/getting_started/command_line_interface/",
     ],
@@ -18,6 +17,7 @@ export const sidebar = [
     items: [
       "/runtime/fundamentals/ts_support/",
       "/runtime/fundamentals/permissions/",
+      "/runtime/fundamentals/modules/",
     ],
   },
   {
@@ -26,12 +26,8 @@ export const sidebar = [
       {
         label: "Using & Publishing Modules",
         items: [
-          "/runtime/manual/basics/modules/",
-          "/runtime/manual/basics/modules/publishing_modules/",
-          "/runtime/manual/basics/modules/reloading_modules/",
           "/runtime/manual/basics/modules/integrity_checking/",
           "/runtime/manual/advanced/private_repositories/",
-          "/runtime/manual/advanced/http_imports/",
         ],
       },
       {

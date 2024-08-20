@@ -157,7 +157,7 @@ Affect commands which can download resources to the cache: `deno cache`,
 --lock-write     Write lock file. Use with --lock.
 ```
 
-Find out more about these [here](../basics/modules/integrity_checking.md).
+Find out more about these [here](TODO:integrity-checking-link).
 
 ### Cache and compilation flags
 
