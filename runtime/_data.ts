@@ -26,7 +26,6 @@ export const sidebar = [
       {
         label: "Using & Publishing Modules",
         items: [
-          "/runtime/manual/basics/modules/integrity_checking/",
           "/runtime/manual/advanced/private_repositories/",
         ],
       },
