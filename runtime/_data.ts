@@ -49,7 +49,6 @@ export const sidebar = [
           "/runtime/manual/runtime/import_meta_api/",
           "/runtime/manual/runtime/ffi_api/",
           "/runtime/manual/runtime/program_lifecycle/",
-          "/runtime/manual/runtime/stability/",
         ],
       },
       {
